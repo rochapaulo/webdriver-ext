@@ -6,9 +6,8 @@ import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -40,7 +39,7 @@ public class PageElementProcessor extends AbstractProcessor {
 	private String packageName;
 	private String pageImplName;
 	private String pageTemplateName;
-	private List<Method> methodList = new ArrayList<ComponentProcessor.Method>();
+	private Set<Method> methodSet = new LinkedHashSet<ComponentProcessor.Method>(); 
 	
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -113,14 +112,14 @@ public class PageElementProcessor extends AbstractProcessor {
 	}
 	
 	private void process(ComponentProcessor processor) {
-		methodList.add(processor.process());
+		methodSet.add(processor.process());
 	}
 	
 	private void generatePage() throws IOException {
 		StringBuilder methods = new StringBuilder();
 		
 		Set<String> dependencySet = new HashSet<String>();
-		for (Method method : methodList) {
+		for (Method method : methodSet) {
 			dependencySet.addAll(method.getDependencies());
 			methods.append("\n")
 				.append(indent(method.getBody(), "_"))
