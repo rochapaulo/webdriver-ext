@@ -31,7 +31,7 @@ final class Button extends ComponentProcessor {
 			returnCanonical = returnCanonical.replace("Template", "Page");
 		} else {
 			try {
-				annotation.returnType();
+				returnCanonical = toCanonicalName(annotation.returnType());
 			} catch(MirroredTypeException ex) {
 				returnCanonical = toCanonicalName(ex.getTypeMirror());
 			}

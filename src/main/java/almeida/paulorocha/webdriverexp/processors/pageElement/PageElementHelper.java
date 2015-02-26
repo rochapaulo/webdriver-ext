@@ -20,9 +20,16 @@ public final class PageElementHelper {
 		return value.substring(0, 1).toUpperCase() + value.substring(1);
 	}
 	
+	public static String toCanonicalName(Class<?> clazz) {
+		if (clazz.getCanonicalName().equals(ABSTRACT_PAGE)) {
+			return VOID;
+		}
+		return clazz.getCanonicalName();
+	}
+	
 	public static String toCanonicalName(TypeMirror type) {
 		if (type.toString().equals(ABSTRACT_PAGE)) {
-			return "void";
+			return VOID;
 		}
 		return type.toString();
 	}
