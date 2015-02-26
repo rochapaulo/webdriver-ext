@@ -7,6 +7,7 @@ import static almeida.paulorocha.webdriverexp.processors.pageElement.PageElement
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
 
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
 
@@ -29,7 +30,11 @@ final class Button extends ComponentProcessor {
 			returnCanonical = typeElement.getQualifiedName().toString();
 			returnCanonical = returnCanonical.replace("Template", "Page");
 		} else {
-			returnCanonical = toCanonicalName(annotation.returnType());
+			try {
+				annotation.returnType();
+			} catch(MirroredTypeException ex) {
+				returnCanonical = toCanonicalName(ex.getTypeMirror());
+			}
 		}
 		
 		String returnType = toReturnType(returnCanonical);

@@ -6,7 +6,9 @@ import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -29,7 +31,7 @@ import almeida.paulorocha.webdriverexp.annotations.AbstractPage;
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
 import almeida.paulorocha.webdriverexp.processors.pageElement.ComponentProcessor.Method;
 
-@SupportedAnnotationTypes("almeida.paulorocha.processing.annotations.PageElement")
+@SupportedAnnotationTypes("almeida.paulorocha.webdriverexp.annotations.PageElement")
 public class PageElementProcessor extends AbstractProcessor {
 
 	private Filer filer;
@@ -38,7 +40,7 @@ public class PageElementProcessor extends AbstractProcessor {
 	private String packageName;
 	private String pageImplName;
 	private String pageTemplateName;
-	private Set<Method> methodSet = new HashSet<ComponentProcessor.Method>();
+	private List<Method> methodList = new ArrayList<ComponentProcessor.Method>();
 	
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -111,14 +113,14 @@ public class PageElementProcessor extends AbstractProcessor {
 	}
 	
 	private void process(ComponentProcessor processor) {
-		methodSet.add(processor.process());
+		methodList.add(processor.process());
 	}
 	
 	private void generatePage() throws IOException {
 		StringBuilder methods = new StringBuilder();
 		
 		Set<String> dependencySet = new HashSet<String>();
-		for (Method method : methodSet) {
+		for (Method method : methodList) {
 			dependencySet.addAll(method.getDependencies());
 			methods.append("\n")
 				.append(indent(method.getBody(), "_"))
