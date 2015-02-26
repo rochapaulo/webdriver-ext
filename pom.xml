@@ -37,7 +37,7 @@
 			<artifactId>tools</artifactId>
 			<version>${java.version}</version>
 			<scope>system</scope>
-			<systemPath>/usr/lib/jvm/java-7-openjdk-amd64/lib/tools.jar</systemPath>
+			<systemPath>${java.home}/../lib/tools.jar</systemPath>
 		</dependency>
 	</dependencies>
 
