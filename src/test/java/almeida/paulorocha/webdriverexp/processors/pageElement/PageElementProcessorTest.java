@@ -8,15 +8,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import almeida.paulorocha.webdriverexp.processors.pageElement.PageElementProcessor;
-
 @RunWith(JUnit4.class)
 public class PageElementProcessorTest {
 
 	private final String PROTECTED_MODIFIER_ERROR = "ProtectedModifierErrorTemplate.java";
 	private final String SUPERCLASS_ERROR = "SuperclassErrorTemplate.java";
 	private final String SUFFIX_PAGE_TEMPLATE_ERROR = "SuffixError.java";
-
+	
 	@Test
 	public void verifyGeneratedClass() {
 		ASSERT.about(javaSource())

@@ -1,3 +1,5 @@
+import net.sourceforge.htmlunit.corejs.javascript.Token.CommentType;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -17,5 +19,8 @@ public class TestTemplate extends AbstractPage {
 	
 	@PageElement(type = ComponentType.BUTTON, fluent = false)
 	protected WebElement button2;
+	
+	@PageElement(type = ComponentType.UNKNOWN)
+	protected WebElement unknown;
 	
 }

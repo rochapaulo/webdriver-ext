@@ -1,9 +1,0 @@
-imports:
-[
-
-]
-
-body:
-[
-__System.out.println(\"ButtonClicked\");
-]

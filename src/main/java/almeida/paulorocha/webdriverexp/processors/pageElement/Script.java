@@ -8,29 +8,40 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 
 public class Script {
 
 	private File scriptFile;
 	
 	private String body;
-	private List<String> imports;
+	private List<Import> imports;
 	
 	public static Script _button() {
-		return new Script("/scripts/button.method");
+		return new Script("scripts/button.method");
 	}
 	
 	public static Script _assert() {
-		return new Script("/scripts/assert.method");
+		return new Script("scripts/assert.method");
 	}
 	
 	Script(String scriptPath) {
-		scriptFile = new File(getClass().getResource(scriptPath).getFile());
+		scriptFile = new File(Thread.currentThread().getContextClassLoader().getResource(scriptPath).getFile());
 		
 		try {
 			
 			final BufferedReader buffer = new BufferedReader(new FileReader(scriptFile));
-			imports = readContents(buffer, "imports:[");
+			imports = Lists.transform(readContents(buffer, "imports:["), new Function<String, Import>() {
+
+				@Override
+				public Import apply(String input) {
+					return new Import(input);
+				}
+				
+			});
+			
 			body = readContent(buffer, "body:[");
 			
 		} catch (IOException e) {
@@ -43,7 +54,7 @@ public class Script {
 		return body;
 	}
 	
-	public Collection<? extends String> getImportList() {
+	public Collection<Import> getImportList() {
 		return imports;
 	}
 	

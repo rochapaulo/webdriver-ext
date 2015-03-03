@@ -1,9 +1,17 @@
+import org.hamcrest.Matcher;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class TestPage extends TestTemplate {
 
     public TestPage(WebDriver driver) {
         super(driver);
+    }
+    
+    public TestPage assertUnknown(Matcher<WebElement> matcher) {
+        Assert.assertThat(unknown, matcher);
+        return this;
     }
 
     public TestPage clickButton() {

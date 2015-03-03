@@ -2,6 +2,8 @@ package almeida.paulorocha.webdriverexp.processors.pageElement;
 
 import javax.lang.model.element.VariableElement;
 
+import almeida.paulorocha.webdriverexp.processors.pageElement.Method.Modifiers;
+
 final class Unknown extends ComponentProcessor {
 	
 	private static final Script fgAssertScript = Script._assert();
@@ -13,10 +15,9 @@ final class Unknown extends ComponentProcessor {
 	@Override
 	public Method process() {
 		return new Method.Builder(fieldElement)
-			.modifier("public")
+			.modifier(Modifiers.PUBLIC)
 			.namePreffix("assert")
 			.arguments(
-					new Method.Argument("WebElement", "element"),
 					new Method.Argument("Matcher<WebElement>", "matcher")
 					)
 			.script(fgAssertScript)

@@ -79,7 +79,7 @@ public class ButtonTest {
 			.append("_}");
 		
 		Assert.assertThat(method.getImportList(),
-				contains("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate"));
+				contains(new Import("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate")));
 		
 		Assert.assertEquals(expectedMethod.toString(), method.get());
 	}

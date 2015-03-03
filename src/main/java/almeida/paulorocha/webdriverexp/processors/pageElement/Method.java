@@ -1,14 +1,20 @@
 package almeida.paulorocha.webdriverexp.processors.pageElement;
 
+import static almeida.paulorocha.webdriverexp.processors.pageElement.Method.Modifiers.PUBLIC;
 import static almeida.paulorocha.webdriverexp.processors.pageElement.PageElementHelper.VOID;
 import static almeida.paulorocha.webdriverexp.processors.pageElement.PageElementHelper.toCamelCase;
 import static almeida.paulorocha.webdriverexp.processors.pageElement.PageElementHelper.toCanonicalName;
 import static almeida.paulorocha.webdriverexp.processors.pageElement.PageElementHelper.toReturnType;
 import static java.lang.String.format;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.regex.Pattern.compile;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -16,16 +22,18 @@ import javax.lang.model.type.MirroredTypeException;
 
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
 
-public class Method {
+public class Method implements Comparable<Method> {
 	
-	private final Set<String> imports = new HashSet<String>();
+	private final SortedSet<Import> imports = new TreeSet<Import>();
 	
 	private final String method;
+	
+	public enum Modifiers {	PUBLIC }
 	
 	static class Builder {
 		
 		private final boolean fluent;
-		private String modifier, preffix, name, returnCanonical;
+		private String modifier, preffix, fieldName, returnCanonical;
 		private Argument[] arguments = new Argument[0];
 		private Script script;
 		
@@ -43,11 +51,11 @@ public class Method {
 					returnCanonical = toCanonicalName(ex.getTypeMirror());
 				}
 			}
-			name = toCamelCase(fieldElement.getSimpleName().toString());
+			fieldName = fieldElement.getSimpleName().toString();
 		}
 		
-		Builder modifier(String value) {
-			modifier = value;
+		Builder modifier(Modifiers value) {
+			modifier = value.toString().toLowerCase();
 			return this;
 		}
 		
@@ -80,15 +88,15 @@ public class Method {
 		final String returnType = toReturnType(builder.returnCanonical);
 		sb.append(format("_%s", builder.modifier))
 			.append(format(" %s", returnType))
-			.append(format(" %s%s", builder.preffix, builder.name))
+			.append(format(" %s%s", builder.preffix, toCamelCase(builder.fieldName)))
 			.append(format("(%s) {\n", arguments))
-			.append(builder.script.getBody())
+			.append(builder.script.getBody().replace("$element", builder.fieldName))
 			.append("\n");
 
 		if (!builder.fluent) {
 			if (!returnType.equals(VOID)) {
 				sb.append(format("__return new %s(driver);\n", returnType));
-				imports.add(builder.returnCanonical);
+				imports.add(new Import(builder.returnCanonical));
 			}
 		} else {
 			sb.append("__return this;\n");
@@ -115,7 +123,7 @@ public class Method {
 		return sb.toString();
 	}
 	
-	public Set<String> getImportList() {
+	public Set<Import> getImportList() {
 		return Collections.unmodifiableSet(imports);
 	}
 	
@@ -133,5 +141,19 @@ public class Method {
 		 }
 		
 	 }
-	 
+
+	@Override
+	public int compareTo(Method other) {
+		return getName(this).compareTo(getName(other));
+	}
+	
+	private String getName(Method method) {
+		Pattern pattern = compile(format("%s (.*?) (.*?)\\(.* ", PUBLIC), CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(method.get());
+		if (matcher.find()) {
+			return matcher.group(2);
+		}
+		throw new RuntimeException("Method signature name malformed = " + method.get());
+	}
+	
 }

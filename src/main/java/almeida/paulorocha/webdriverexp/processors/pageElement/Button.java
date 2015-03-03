@@ -2,6 +2,8 @@ package almeida.paulorocha.webdriverexp.processors.pageElement;
 
 import javax.lang.model.element.VariableElement;
 
+import almeida.paulorocha.webdriverexp.processors.pageElement.Method.Modifiers;
+
 
 final class Button extends ComponentProcessor {
 
@@ -14,7 +16,7 @@ final class Button extends ComponentProcessor {
 	@Override
 	public Method process() {
 		Method method = new Method.Builder(fieldElement)
-			.modifier("public")
+			.modifier(Modifiers.PUBLIC)
 			.namePreffix("click")
 			.script(fgButtonScript)
 			.build();

@@ -6,9 +6,9 @@ import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -39,7 +39,7 @@ public class PageElementProcessor extends AbstractProcessor {
 	private String packageName;
 	private String pageImplName;
 	private String pageTemplateName;
-	private Set<Method> methodSet = new LinkedHashSet<Method>(); 
+	private SortedSet<Method> methodSet = new TreeSet<Method>(); 
 	
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -120,7 +120,7 @@ public class PageElementProcessor extends AbstractProcessor {
 	private void generatePage() throws IOException {
 		StringBuilder methods = new StringBuilder();
 		
-		Set<String> dependencySet = new HashSet<String>();
+		SortedSet<Import> dependencySet = new TreeSet<Import>();
 		for (Method method : methodSet) {
 			dependencySet.addAll(method.getImportList());
 			methods.append("\n")
@@ -138,9 +138,10 @@ public class PageElementProcessor extends AbstractProcessor {
 			sourceFile = pageImplName;
 		}
 		
-		dependencySet.addAll(asList("org.openqa.selenium.WebDriver"));
-		for (String dependency : dependencySet) {
-			pageObject.append(format("import %s;\n", dependency));
+		dependencySet.addAll(asList(new Import("org.openqa.selenium.WebDriver")));
+		
+		for (Import dependency : dependencySet) {
+			pageObject.append(format("import %s;\n", dependency.get()));
 		}
 		pageObject.append("\n");
 		pageObject.append(format("public class %s extends %s {\n\n", pageImplName, pageTemplateName))
