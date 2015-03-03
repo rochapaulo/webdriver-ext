@@ -18,7 +18,6 @@ import org.openqa.selenium.WebDriver;
 import almeida.paulorocha.webdriverexp.annotations.AbstractPage;
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
 import almeida.paulorocha.webdriverexp.annotations.PageElement.ComponentType;
-import almeida.paulorocha.webdriverexp.processors.pageElement.ComponentProcessor.Method;
 
 public class ButtonTest {
 
@@ -52,8 +51,8 @@ public class ButtonTest {
 			.append("__System.out.println(\"ButtonClicked\");\n")
 			.append("_}");
 		
-		Assert.assertThat(method.getDependencies(), empty());
-		Assert.assertEquals(expectedMethod.toString(), method.getBody());
+		Assert.assertThat(method.getImportList(), empty());
+		Assert.assertEquals(expectedMethod.toString(), method.get());
 	}
 	
 	@Test
@@ -80,10 +79,10 @@ public class ButtonTest {
 			.append("_}");
 		
 		
-		Assert.assertThat(method.getDependencies(),
+		Assert.assertThat(method.getImportList(),
 				contains("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate"));
 		
-		Assert.assertEquals(expectedMethod.toString(), method.getBody());
+		Assert.assertEquals(expectedMethod.toString(), method.get());
 	}
 	
 	@Test
@@ -111,8 +110,8 @@ public class ButtonTest {
 			.append("__return this;\n")
 			.append("_}");
 		
-		Assert.assertThat(method.getDependencies(), empty());
-		Assert.assertEquals(expectedMethod.toString(), method.getBody());
+		Assert.assertThat(method.getImportList(), empty());
+		Assert.assertEquals(expectedMethod.toString(), method.get());
 	}
 	
 	class TestTemplate extends AbstractPage {

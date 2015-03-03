@@ -39,13 +39,6 @@
 			<scope>system</scope>
 			<systemPath>${toolsjar}</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>editor.lib</groupId>
-			<artifactId>editor_lib</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/editor_lib.jar</systemPath>
-		</dependency>
 	</dependencies>
 
 	<build>

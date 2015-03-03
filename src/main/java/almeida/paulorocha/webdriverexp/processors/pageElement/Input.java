@@ -1,10 +1,10 @@
 package almeida.paulorocha.webdriverexp.processors.pageElement;
 
-import javax.lang.model.element.Element;
+import javax.lang.model.element.VariableElement;
 
 final class Input extends ComponentProcessor {
 
-	Input(Element element) {
+	Input(VariableElement element) {
 		super(element);
 	}
 

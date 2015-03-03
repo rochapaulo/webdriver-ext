@@ -1,10 +1,10 @@
 package almeida.paulorocha.webdriverexp.processors.pageElement;
 
-import javax.lang.model.element.Element;
+import javax.lang.model.element.VariableElement;
 
 final class Unknown extends ComponentProcessor {
 
-	Unknown(Element element) {
+	Unknown(VariableElement element) {
 		super(element);
 	}
 

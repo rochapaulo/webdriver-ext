@@ -21,6 +21,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
@@ -28,7 +29,6 @@ import javax.tools.JavaFileObject;
 
 import almeida.paulorocha.webdriverexp.annotations.AbstractPage;
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
-import almeida.paulorocha.webdriverexp.processors.pageElement.ComponentProcessor.Method;
 
 @SupportedAnnotationTypes("almeida.paulorocha.webdriverexp.annotations.PageElement")
 public class PageElementProcessor extends AbstractProcessor {
@@ -39,7 +39,7 @@ public class PageElementProcessor extends AbstractProcessor {
 	private String packageName;
 	private String pageImplName;
 	private String pageTemplateName;
-	private Set<Method> methodSet = new LinkedHashSet<ComponentProcessor.Method>(); 
+	private Set<Method> methodSet = new LinkedHashSet<Method>(); 
 	
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -57,7 +57,9 @@ public class PageElementProcessor extends AbstractProcessor {
 		
 		for (Element element : roundEnv.getElementsAnnotatedWith(PageElement.class)) {
 			
-			TypeElement typeElement = (TypeElement) element.getEnclosingElement();
+			final VariableElement fieldElement = (VariableElement) element;
+			
+			TypeElement typeElement = (TypeElement) fieldElement.getEnclosingElement();
 			
 			pageTemplateName = typeElement.getSimpleName().toString();
 			if (!pageTemplateName.matches(".*Template")) {
@@ -73,7 +75,7 @@ public class PageElementProcessor extends AbstractProcessor {
 			}
 			
 			if (!element.getModifiers().contains(Modifier.PROTECTED))  {
-				messager.printMessage(Kind.ERROR, "Page fields must be: protected", element);
+				messager.printMessage(Kind.ERROR, "Page fields must be: protected", fieldElement);
 				return false;
 			}
 			
@@ -85,15 +87,15 @@ public class PageElementProcessor extends AbstractProcessor {
 			PageElement annotation = element.getAnnotation(PageElement.class);
 			switch (annotation.type()) {
 			case BUTTON:
-				process(new Button(element));
+				process(new Button(fieldElement));
 				break;
 				
 			case INPUT:
-				process(new Input(element));
+				process(new Input(fieldElement));
 				break;
 				
 			case UNKNOWN:
-				process(new Unknown(element));
+				process(new Unknown(fieldElement));
 				break;
 			}
 		}
@@ -120,9 +122,9 @@ public class PageElementProcessor extends AbstractProcessor {
 		
 		Set<String> dependencySet = new HashSet<String>();
 		for (Method method : methodSet) {
-			dependencySet.addAll(method.getDependencies());
+			dependencySet.addAll(method.getImportList());
 			methods.append("\n")
-				.append(indent(method.getBody(), "_"))
+				.append(indent(method.get(), "_"))
 				.append("\n");
 		}
 		
