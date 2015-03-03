@@ -5,7 +5,7 @@ import javax.lang.model.element.VariableElement;
 
 final class Button extends ComponentProcessor {
 
-	private static final Script fgButtonScript = Script.button();
+	private static final Script fgButtonScript = Script._button();
 
 	Button(VariableElement element) {
 		super(element);

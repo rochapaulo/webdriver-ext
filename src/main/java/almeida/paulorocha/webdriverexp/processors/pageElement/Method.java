@@ -26,7 +26,7 @@ public class Method {
 		
 		private final boolean fluent;
 		private String modifier, preffix, name, returnCanonical;
-		private String[] arguments = new String[0];
+		private Argument[] arguments = new Argument[0];
 		private Script script;
 		
 		public Builder(VariableElement fieldElement) {
@@ -56,7 +56,7 @@ public class Method {
 			return this;
 		}
 		
-		Builder arguments(String... values) {
+		Builder arguments(Argument... values) {
 			arguments = values;
 			return this;
 		}
@@ -72,7 +72,7 @@ public class Method {
 
 	}
 	
-	Method(Builder builder) {
+	private Method(Builder builder) {
 		StringBuilder sb = new StringBuilder();
 		
 		String arguments = buildSignature(builder.arguments);
@@ -99,7 +99,7 @@ public class Method {
 		method = sb.toString();
 	}
 
-	private String buildSignature(String[] args) {
+	private String buildSignature(Argument[] args) {
 		if (args.length == 0) {
 			return "";
 		}
@@ -108,15 +108,11 @@ public class Method {
 		
 		int argLength = args.length;
 		for (int i = 0; i < argLength - 1; i++) {
-			sb.append(format("%s %s, ", args[i], lowerFirst(args[i])));
+			sb.append(format("%s %s, ", args[i].type, args[i].name));
 		}
-		sb.append(format("%s %s", args[argLength - 1], lowerFirst(args[argLength - 1])));
+		sb.append(format("%s %s", args[argLength - 1].type, args[argLength - 1].name));
 		
 		return sb.toString();
-	}
-	
-	private String lowerFirst(String value) {
-		return value.substring(0, 1).toUpperCase() + value.substring(1);
 	}
 	
 	public Set<String> getImportList() {
@@ -127,4 +123,15 @@ public class Method {
 		return method;
 	}
 	
+	 public static class Argument {
+		 
+		private final String type, name;
+
+		public Argument(String type, String name) {
+			 this.type = type;
+			 this.name = name;
+		 }
+		
+	 }
+	 
 }

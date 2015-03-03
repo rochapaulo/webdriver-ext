@@ -78,7 +78,6 @@ public class ButtonTest {
 			.append("__return new TestTemplate(driver);\n")
 			.append("_}");
 		
-		
 		Assert.assertThat(method.getImportList(),
 				contains("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate"));
 		

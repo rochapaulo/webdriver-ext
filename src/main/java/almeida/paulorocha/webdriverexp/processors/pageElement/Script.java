@@ -16,8 +16,12 @@ public class Script {
 	private String body;
 	private List<String> imports;
 	
-	public static Script button() {
+	public static Script _button() {
 		return new Script("/scripts/button.method");
+	}
+	
+	public static Script _assert() {
+		return new Script("/scripts/assert.method");
 	}
 	
 	Script(String scriptPath) {
@@ -72,5 +76,5 @@ public class Script {
 		
 		return lines;
 	}
-	
+
 }
