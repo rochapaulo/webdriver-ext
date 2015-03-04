@@ -94,10 +94,14 @@ public class PageElementProcessor extends AbstractProcessor {
 				process(new Input(fieldElement));
 				break;
 				
-			case UNKNOWN:
-				process(new Unknown(fieldElement));
+			default:
 				break;
 			}
+			
+			if (annotation.generateAssert()) {
+				process(new Assert(fieldElement));
+			}
+			
 		}
 		try {
 			

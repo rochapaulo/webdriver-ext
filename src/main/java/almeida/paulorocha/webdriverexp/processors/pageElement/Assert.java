@@ -4,11 +4,11 @@ import javax.lang.model.element.VariableElement;
 
 import almeida.paulorocha.webdriverexp.processors.pageElement.Method.Modifiers;
 
-final class Unknown extends ComponentProcessor {
+final class Assert extends ComponentProcessor {
 	
 	private static final Script fgAssertScript = Script._assert();
 
-	Unknown(VariableElement fieldElement) {
+	Assert(VariableElement fieldElement) {
 		super(fieldElement);
 	}
 

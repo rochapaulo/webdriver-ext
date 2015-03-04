@@ -17,7 +17,7 @@ public class TestTemplate extends AbstractPage {
 	@PageElement(type = ComponentType.BUTTON)
 	protected WebElement button;
 	
-	@PageElement(type = ComponentType.BUTTON, fluent = false)
+	@PageElement(type = ComponentType.BUTTON, fluent = false, generateAssert = false)
 	protected WebElement button2;
 	
 	@PageElement(type = ComponentType.UNKNOWN)

@@ -20,15 +20,15 @@ public class Script {
 	private List<Import> imports;
 	
 	public static Script _button() {
-		return new Script("scripts/button.method");
+		return new Script("/scripts/button.method");
 	}
 	
 	public static Script _assert() {
-		return new Script("scripts/assert.method");
+		return new Script("/scripts/assert.method");
 	}
 	
 	Script(String scriptPath) {
-		scriptFile = new File(Thread.currentThread().getContextClassLoader().getResource(scriptPath).getFile());
+		scriptFile = new File(getClass().getResource(scriptPath).getFile());
 		
 		try {
 			

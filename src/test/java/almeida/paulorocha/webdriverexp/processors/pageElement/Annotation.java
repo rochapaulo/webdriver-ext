@@ -49,6 +49,12 @@ public class Annotation {
 				public Class<? extends AbstractPage> returnType() {
 					return returnType;
 				}
+
+				@Override
+				public boolean generateAssert() {
+					return true;
+				}
+				
 			};
 		}
 		

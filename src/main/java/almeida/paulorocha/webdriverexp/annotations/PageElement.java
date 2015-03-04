@@ -13,6 +13,8 @@ public @interface PageElement {
 	
 	boolean fluent() default true;
 	
+	boolean generateAssert() default true;
+	
 	Class<? extends AbstractPage> returnType() default AbstractPage.class;
 	
 	public enum ComponentType {

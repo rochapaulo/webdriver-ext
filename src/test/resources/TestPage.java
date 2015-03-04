@@ -8,7 +8,12 @@ public class TestPage extends TestTemplate {
     public TestPage(WebDriver driver) {
         super(driver);
     }
-    
+
+    public TestPage assertButton(Matcher<WebElement> matcher) {
+        Assert.assertThat(button, matcher);
+        return this;
+    }
+
     public TestPage assertUnknown(Matcher<WebElement> matcher) {
         Assert.assertThat(unknown, matcher);
         return this;
