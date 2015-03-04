@@ -1,0 +1,9 @@
+imports:[
+org.junit.Assert
+org.openqa.selenium.WebElement
+org.hamcrest.Matcher
+]
+
+body:[
+__Assert.assertThat($element, matcher);
+]

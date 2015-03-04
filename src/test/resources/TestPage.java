@@ -9,23 +9,37 @@ public class TestPage extends TestTemplate {
         super(driver);
     }
 
-    public TestPage assertButton(Matcher<WebElement> matcher) {
-        Assert.assertThat(button, matcher);
+    public TestPage assertFirstName(Matcher<WebElement> matcher) {
+        Assert.assertThat(firstName, matcher);
         return this;
     }
 
-    public TestPage assertUnknown(Matcher<WebElement> matcher) {
-        Assert.assertThat(unknown, matcher);
-        return this;
+    public void assertLastName(Matcher<WebElement> matcher) {
+        Assert.assertThat(lastName, matcher);
     }
 
-    public TestPage clickButton() {
+    public TestPage clickCancel() {
         System.out.println("ButtonClicked");
         return this;
     }
 
-    public void clickButton2() {
+    public TestPage clickSave() {
         System.out.println("ButtonClicked");
+        return this;
+    }
+
+    public TestPage typeFirstName(String value) {
+        System.out.println("Typed value = " + value + " into " + firstName.getText());
+        return this;
+    }
+
+    public void typeLastName(String value) {
+        System.out.println("Typed value = " + value + " into " + lastName.getText());
+    }
+
+    public TestPage typeNote(String value) {
+        System.out.println("Typed value = " + value + " into " + note.getText());
+        return this;
     }
 
 }
