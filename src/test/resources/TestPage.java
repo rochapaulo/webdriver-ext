@@ -23,9 +23,9 @@ public class TestPage extends TestTemplate {
         return this;
     }
 
-    public TestPage clickSave() {
+    public ReturnTemplate clickSave() {
         System.out.println("ButtonClicked");
-        return this;
+        return new ReturnTemplate(driver);
     }
 
     public TestPage typeFirstName(String value) {

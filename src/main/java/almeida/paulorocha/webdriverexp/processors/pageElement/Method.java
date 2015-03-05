@@ -33,12 +33,13 @@ public class Method implements Comparable<Method> {
 	static class Builder {
 		
 		private final boolean fluent;
-		private String modifier, preffix, fieldName, returnCanonical;
+		private String parentType, modifier, preffix, fieldName, returnCanonical;
 		private Argument[] arguments = new Argument[0];
 		private Script script;
 		
 		public Builder(VariableElement fieldElement) {
 			final PageElement annotation = fieldElement.getAnnotation(PageElement.class);
+			parentType = fieldElement.getEnclosingElement().getSimpleName().toString();
 			fluent = annotation.fluent();
 			if (fluent) {
 				TypeElement typeElement = (TypeElement)fieldElement.getEnclosingElement();
@@ -96,7 +97,11 @@ public class Method implements Comparable<Method> {
 		if (!builder.fluent) {
 			if (!returnType.equals(VOID)) {
 				sb.append(format("__return new %s(driver);\n", returnType));
-				imports.add(new Import(builder.returnCanonical));
+				
+				if (!builder.returnCanonical.startsWith(builder.parentType)) {
+					imports.add(new Import(builder.returnCanonical));
+				}
+				
 			}
 		} else {
 			sb.append("__return this;\n");

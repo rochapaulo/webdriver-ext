@@ -17,7 +17,7 @@ public class TestTemplate extends AbstractPage {
 	@PageElement(type = ComponentType.BUTTON, generateAssert = false)
 	protected WebElement cancel;
 	
-	@PageElement(type = ComponentType.BUTTON, generateAssert = false, returnType = ReturnTemplate.class)
+	@PageElement(type = ComponentType.BUTTON, generateAssert = false, fluent = false, returnType = ReturnTemplate.class)
 	protected WebElement save;
 
 	@PageElement(type = ComponentType.INPUT)
