@@ -2,5 +2,5 @@ imports:[
 ]
 
 body:[
-__System.out.println("Typed value = " + value + " into " + $element.getText());
+__$element.sendKeys(value);
 ]

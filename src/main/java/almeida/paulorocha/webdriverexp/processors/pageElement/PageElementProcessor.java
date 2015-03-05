@@ -55,6 +55,7 @@ public class PageElementProcessor extends AbstractProcessor {
 			return false;
 		}
 		
+		
 		for (Element element : roundEnv.getElementsAnnotatedWith(PageElement.class)) {
 			
 			final VariableElement fieldElement = (VariableElement) element;
@@ -159,6 +160,7 @@ public class PageElementProcessor extends AbstractProcessor {
 			writer.write(pageObject.toString());
 		} finally {
 			writer.close();
+			methodSet.clear();
 		}
 	}
 	
