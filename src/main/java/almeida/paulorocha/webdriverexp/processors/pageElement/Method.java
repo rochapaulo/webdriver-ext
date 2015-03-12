@@ -128,7 +128,7 @@ public class Method implements Comparable<Method> {
 		return sb.toString();
 	}
 	
-	public Set<Import> getImportList() {
+	public Set<Import> getImportSet() {
 		return Collections.unmodifiableSet(imports);
 	}
 	

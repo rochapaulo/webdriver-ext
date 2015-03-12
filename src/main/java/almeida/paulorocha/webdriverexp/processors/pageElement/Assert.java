@@ -13,15 +13,21 @@ final class Assert extends ComponentProcessor {
 	}
 
 	@Override
-	public Method process() {
-		return new Method.Builder(fieldElement)
-			.modifier(Modifiers.PUBLIC)
-			.namePreffix("assert")
-			.arguments(
+	public MethodSet process() {
+		MethodSet methods = new MethodSet(1);
+		
+		methods.add(
+			new Method.Builder(fieldElement)
+				.modifier(Modifiers.PUBLIC)
+				.namePreffix("assert")
+				.arguments(
 					new Method.Argument("Matcher<WebElement>", "matcher")
-					)
-			.script(fgAssertScript)
-			.build();
+				)
+				.script(fgAssertScript)
+				.build()
+		);
+		
+		return methods;
 	}
 
 }

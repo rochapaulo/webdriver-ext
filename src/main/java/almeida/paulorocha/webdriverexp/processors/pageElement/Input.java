@@ -13,15 +13,21 @@ final class Input extends ComponentProcessor {
 	}
 
 	@Override
-	public Method process() {
-		return new Method.Builder(fieldElement)
-		.modifier(Modifiers.PUBLIC)
-			.namePreffix("type")
-			.arguments(
+	public MethodSet process() {
+		MethodSet methods = new MethodSet(1);
+		
+		methods.add(
+			new Method.Builder(fieldElement)
+				.modifier(Modifiers.PUBLIC)
+				.namePreffix("type")
+				.arguments(
 					new Method.Argument("String", "value")
-					)
-			.script(fgInputScript)
-			.build();
+				)
+				.script(fgInputScript)
+				.build()
+		);
+		
+		return methods;
 	}
 
 }

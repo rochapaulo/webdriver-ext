@@ -14,14 +14,18 @@ final class Button extends ComponentProcessor {
 	}
 	
 	@Override
-	public Method process() {
-		Method method = new Method.Builder(fieldElement)
-			.modifier(Modifiers.PUBLIC)
-			.namePreffix("click")
-			.script(fgButtonScript)
-			.build();
+	public MethodSet process() {
+		MethodSet methods = new MethodSet(1);
 		
-		return method;
+		methods.add(
+			new Method.Builder(fieldElement)
+				.modifier(Modifiers.PUBLIC)
+				.namePreffix("click")
+				.script(fgButtonScript)
+				.build()
+		);
+		
+		return methods;
 	}
 
 }

@@ -1,7 +1,9 @@
 package almeida.paulorocha.webdriverexp.processors.pageElement;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
+import static almeida.paulorocha.webdriverexp.processors.pageElement.MethodMatchers.contains;
+import static almeida.paulorocha.webdriverexp.processors.pageElement.MethodMatchers.dependency;
+import static almeida.paulorocha.webdriverexp.processors.pageElement.MethodMatchers.methodImpl;
+import static almeida.paulorocha.webdriverexp.processors.pageElement.MethodMatchers.noDependency;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import almeida.paulorocha.webdriverexp.annotations.AbstractPage;
 import almeida.paulorocha.webdriverexp.annotations.PageElement;
 import almeida.paulorocha.webdriverexp.annotations.PageElement.ComponentType;
+import almeida.paulorocha.webdriverexp.processors.pageElement.ComponentProcessor.MethodSet;
 
 public class ButtonTest {
 
@@ -44,18 +47,19 @@ public class ButtonTest {
 		when(fieldElement.getEnclosingElement().getSimpleName().toString()).thenReturn(Mockito.anyString());
 		
 		Button button = new Button(fieldElement);
-		Method method = button.process();
+		MethodSet methods = button.process();
 		
 		StringBuilder expectedMethod = new StringBuilder();
 		expectedMethod
 			.append("_public void clickButton() {\n")
 			.append("__System.out.println(\"ButtonClicked\");\n")
 			.append("_}");
-		
-		Assert.assertThat(method.getImportList(), empty());
-		Assert.assertEquals(expectedMethod.toString(), method.get());
+
+		Assert.assertThat(methods, contains(noDependency()));
+		Assert.assertThat(methods, contains(methodImpl(expectedMethod.toString())));
 	}
 	
+
 	@Test
 	public void returnPage() {
 		when(fieldElement.getAnnotation(PageElement.class))
@@ -71,7 +75,7 @@ public class ButtonTest {
 		when(fieldElement.getEnclosingElement().getSimpleName().toString()).thenReturn("SomeClass");
 		
 		Button button = new Button(fieldElement);
-		Method method = button.process();
+		MethodSet methods = button.process();
 		
 		StringBuilder expectedMethod = new StringBuilder();
 		expectedMethod
@@ -80,10 +84,13 @@ public class ButtonTest {
 			.append("__return new TestTemplate(driver);\n")
 			.append("_}");
 		
-		Assert.assertThat(method.getImportList(),
-				contains(new Import("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate")));
+		Assert.assertThat(methods, 
+			contains(
+				dependency(
+						new Import("almeida.paulorocha.webdriverexp.processors.pageElement.ButtonTest.TestTemplate"))
+					));
 		
-		Assert.assertEquals(expectedMethod.toString(), method.get());
+		Assert.assertThat(methods, contains(methodImpl(expectedMethod.toString())));
 	}
 	
 	@Test
@@ -103,7 +110,7 @@ public class ButtonTest {
 		when(classElement.getQualifiedName().toString()).thenReturn("TestTemplate");
 		
 		Button button = new Button(fieldElement);
-		Method method = button.process();
+		MethodSet methods = button.process();
 		
 		StringBuilder expectedMethod = new StringBuilder();
 		expectedMethod
@@ -112,8 +119,8 @@ public class ButtonTest {
 			.append("__return this;\n")
 			.append("_}");
 		
-		Assert.assertThat(method.getImportList(), empty());
-		Assert.assertEquals(expectedMethod.toString(), method.get());
+		Assert.assertThat(methods, contains(noDependency()));
+		Assert.assertThat(methods, contains(methodImpl(expectedMethod.toString())));
 	}
 	
 	class TestTemplate extends AbstractPage {

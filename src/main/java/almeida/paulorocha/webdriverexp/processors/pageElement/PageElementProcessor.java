@@ -119,7 +119,9 @@ public class PageElementProcessor extends AbstractProcessor {
 	}
 	
 	private void process(ComponentProcessor processor) {
-		methodSet.add(processor.process());
+		for (Method method : processor.process()) {
+			methodSet.add(method);
+		}
 	}
 	
 	private void generatePage() throws IOException {
@@ -127,7 +129,7 @@ public class PageElementProcessor extends AbstractProcessor {
 		
 		SortedSet<Import> dependencySet = new TreeSet<Import>();
 		for (Method method : methodSet) {
-			dependencySet.addAll(method.getImportList());
+			dependencySet.addAll(method.getImportSet());
 			methods.append("\n")
 				.append(indent(method.get(), "_"))
 				.append("\n");
