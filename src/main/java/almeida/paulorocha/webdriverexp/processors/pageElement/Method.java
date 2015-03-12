@@ -32,7 +32,7 @@ public class Method implements Comparable<Method> {
 	
 	static class Builder {
 		
-		private final boolean fluent;
+		private boolean fluent;
 		private String parentType, modifier, preffix, fieldName, returnCanonical;
 		private Argument[] arguments = new Argument[0];
 		private Script script;
@@ -40,19 +40,28 @@ public class Method implements Comparable<Method> {
 		public Builder(VariableElement fieldElement) {
 			final PageElement annotation = fieldElement.getAnnotation(PageElement.class);
 			parentType = fieldElement.getEnclosingElement().getSimpleName().toString();
+			
 			fluent = annotation.fluent();
-			if (fluent) {
-				TypeElement typeElement = (TypeElement)fieldElement.getEnclosingElement();
-				returnCanonical = typeElement.getQualifiedName().toString();
-				returnCanonical = returnCanonical.replace("Template", "Page");
-			} else {
-				try {
-					returnCanonical = toCanonicalName(annotation.returnType());
-				} catch(MirroredTypeException ex) {
-					returnCanonical = toCanonicalName(ex.getTypeMirror());
-				}
+			try {
+				returnCanonical = toCanonicalName(annotation.returnType());
+			} catch (MirroredTypeException ex) {
+				returnCanonical = toCanonicalName(ex.getTypeMirror());
 			}
+			
+			if (VOID.equals(returnCanonical)) {
+				
+				if (fluent) {
+					TypeElement typeElement = (TypeElement)fieldElement.getEnclosingElement();
+					returnCanonical = typeElement.getQualifiedName().toString();
+					returnCanonical = returnCanonical.replace("Template", "Page");
+				}
+				
+			} else {
+				fluent = false;
+			}
+			
 			fieldName = fieldElement.getSimpleName().toString();
+			
 		}
 		
 		Builder modifier(Modifiers value) {
